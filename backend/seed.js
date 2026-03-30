@@ -1,0 +1,39 @@
+const connectDB = require('./config/db');
+const Product = require('./models/Product');
+const User = require('./models/User');
+require('dotenv').config();
+
+connectDB();
+
+const products = [
+  { name: "iPhone 17 Pro Max", price: 2750000, storage: "512GB Titanium Gray", brand: "Apple", image: "iphone17-pro-max.jpg", badge: "Latest", tags: ["premium", "camera"] },
+  { name: "iPhone 17 Pro", price: 2350000, storage: "256GB", brand: "Apple", image: "iphone17-pro.jpg", badge: "New", tags: ["performance"] },
+  { name: "Samsung Galaxy S26 Ultra", price: 2450000, storage: "512GB", brand: "Samsung", image: "samsung-s26-ultra.jpg", badge: "Flagship", tags: ["camera"] },
+  { name: "Google Pixel 10 Pro", price: 1850000, storage: "256GB", brand: "Google", image: "pixel10-pro.jpg", badge: "AI", tags: ["ai"] }
+];
+
+const seedDatabase = async () => {
+  try {
+    await Product.deleteMany();
+    await Product.insertMany(products);
+
+    const adminExists = await User.findOne({ email: "test@estore.rw" });
+    if (!adminExists) {
+      await User.create({
+        name: "Admin",
+        email: "test@estore.rw",
+        password: "test123",
+        role: "admin",
+        phone: "+250788123456"
+      });
+    }
+
+    console.log("✅ Seeding completed! Admin account: test@estore.rw / test123");
+    process.exit(0);
+  } catch (error) {
+    console.error("❌ Seeding error:", error);
+    process.exit(1);
+  }
+};
+
+seedDatabase();

@@ -43,8 +43,21 @@ const createOrder = async (orderData) => {
 
 // Products API
 const getProducts = async () => {
-  const res = await fetch(`${API_BASE}/products`);
-  return res.json();
+  try {
+    console.log('🔄 Fetching products from:', `${API_BASE}/products`);
+    const res = await fetch(`${API_BASE}/products`);
+    
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+    
+    const products = await res.json();
+    console.log('✅ Products loaded successfully:', products.length, 'items');
+    return products;
+  } catch (error) {
+    console.error('❌ Error fetching products:', error);
+    throw error;
+  }
 };
 
 class EstoreRW {
@@ -82,10 +95,15 @@ class EstoreRW {
   // ===== PRODUCT LOADING =====
   async loadProducts() {
     try {
+      console.log('🚀 Starting to load products from API...');
       const apiProducts = await getProducts();   // from api.js
+      
+      console.log('📦 Processing API products:', apiProducts);
+      
       // Map API products to frontend format (convert _id to id)
-      this.products = apiProducts.map(p => ({
-        id: p._id,  // Convert MongoDB _id to id
+      this.products = apiProducts.map((p, index) => ({
+        id: p._id,  // Keep MongoDB string ID
+        numericId: index + 1,  // Add numeric ID for ordering
         name: p.name,
         price: p.price,
         storage: p.storage,
@@ -94,21 +112,31 @@ class EstoreRW {
         badge: p.badge,
         tags: p.tags
       }));
+      
+      console.log('✅ Mapped products:', this.products.length, 'items');
+      
       // Update brands and maxProductId based on loaded products
       this.brands = [...new Set(this.products.map(p => p.brand))];
-      this.maxProductId = Math.max(...this.products.map(p => p.id), 0);
+      this.maxProductId = this.products.length;  // Use product count as max ID
+      
+      console.log('🎯 Brands found:', this.brands);
+      console.log('🎯 Max Product ID:', this.maxProductId);
+      
       this.init();  // Initialize UI after products are loaded
     } catch (error) {
-      console.error('Failed to load products:', error);
+      console.log('❌ Failed to load products from API:', error);
+      console.log('📋 Using fallback static products...');
+      
       // fallback to your old static array if needed
       this.products = [
         // Premium Apple Devices
-        { id: 1, name: 'iPhone 17 Pro Max', price: 1299000, storage: '1TB', brand: 'apple', image: 'iphone17-pro-max.jpg', badge: 'Latest', tags: ['premium', 'ai', 'futuristic'] },
-        { id: 2, name: 'iPhone 17 Pro', price: 1099000, storage: '512GB', brand: 'apple', image: 'iphone17-pro.jpg', badge: 'Latest', tags: ['premium', 'ai'] },
-        // ... you can add more fallback products here
+        { id: '1', numericId: 1, name: 'iPhone 17 Pro Max', price: 1299000, storage: '1TB', brand: 'Apple', image: 'iPhone 17 pro max.jpeg', badge: 'Latest', tags: ['premium', 'ai', 'futuristic'] },
+        { id: '2', numericId: 2, name: 'iPhone 17 Pro', price: 1099000, storage: '512GB', brand: 'Apple', image: 'iphone17.jpeg', badge: 'Latest', tags: ['premium', 'ai'] },
+        { id: '3', numericId: 3, name: 'Samsung Galaxy S26 Ultra', price: 1199000, storage: '512GB', brand: 'Samsung', image: 'samsung-s26-ultra.jpg', badge: 'Hot', tags: ['camera', 'gaming'] },
+        { id: '4', numericId: 4, name: 'Google Pixel 10 Pro', price: 999000, storage: '256GB', brand: 'Google', image: 'pixel10.jpg', badge: 'Sale', tags: ['ai', 'camera'] }
       ];
       this.brands = [...new Set(this.products.map(p => p.brand))];
-      this.maxProductId = Math.max(...this.products.map(p => p.id), 0);
+      this.maxProductId = this.products.length;
       this.init();  // Initialize UI with fallback products
     }
   }
@@ -157,7 +185,8 @@ class EstoreRW {
   }
 
   renderProducts() {
-    const grid = document.getElementById('product-grid');
+    // HTML uses products-grid id in premium-index.html
+    const grid = document.getElementById('products-grid') || document.getElementById('product-grid');
     if (!grid) return;
 
     const filtered = this.products.filter(p => 
@@ -360,6 +389,11 @@ class EstoreRW {
     const count = this.cart.reduce((sum, item) => sum + item.qty, 0);
     const countEl = document.getElementById('cart-count');
     if (countEl) countEl.textContent = count;
+
+    // update the top badge in header (premium-index uses cart-badge)
+    const badgeEl = document.querySelector('.cart-badge');
+    if (badgeEl) badgeEl.textContent = count;
+
     this.renderCartModal();
   }
 
@@ -1155,7 +1189,7 @@ class EstoreRW {
     }
 
     // CART BUTTON - Primary Click Handler
-    const cartBtn = document.getElementById('cart-btn');
+    const cartBtn = document.getElementById('cart-btn') || document.getElementById('cart-toggle');
     if (cartBtn) {
       cartBtn.addEventListener('click', (e) => {
         e.preventDefault();

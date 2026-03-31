@@ -10,12 +10,22 @@ const API_BASE = 'http://localhost:5000/api';
 
 // Auth APIs
 const loginUser = async (credentials) => {
-  const res = await fetch(`${API_BASE}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(credentials)
-  });
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials)
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      console.error('Login response error:', res.status, text);
+      throw new Error(`HTTP ${res.status}: ${text}`);
+    }
+    return await res.json();
+  } catch (error) {
+    console.error('loginUser error:', error);
+    throw error;
+  }
 };
 
 const registerUser = async (userData) => {
@@ -366,13 +376,17 @@ class EstoreRW {
   }
 
   removeFromCart(id) {
+    console.log('Removing from cart:', id);
     const item = this.cart.find(i => i.id === id);
+    if (!item) {
+      console.warn('Item not found in cart:', id);
+      this.notify('Item not found in cart', 'error');
+      return;
+    }
     this.cart = this.cart.filter(item => item.id !== id);
     this.saveToStorage('estore_cart', this.cart);
     this.updateCartUI();
-    if (item) {
-      this.notify(`✓ ${item.name} removed from cart`, 'success');
-    }
+    this.notify(`✓ ${item.name} removed from cart`, 'success');
   }
 
   updateCartQuantity(id, qty) {
@@ -414,9 +428,9 @@ class EstoreRW {
           <p style="font-size: 0.9rem; color: #00ffcc;">RWF ${item.price.toLocaleString()}</p>
         </div>
         <div class="cart-item-controls" style="display: flex; gap: 1rem; align-items: center;">
-          <input type="number" min="1" max="100" value="${item.qty}" onchange="store.updateCartQuantity(${item.id}, this.value)" aria-label="Quantity for ${item.name}" style="width: 60px; padding: 6px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; color: #d0d0d0;">
+          <input type="number" min="1" max="100" value="${item.qty}" onchange="store.updateCartQuantity('${item.id}', this.value)" aria-label="Quantity for ${item.name}" style="width: 60px; padding: 6px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; color: #d0d0d0;">
           <span style="color: #d0d0d0; min-width: 120px; text-align: right;">RWF ${(item.price * item.qty).toLocaleString()}</span>
-          <button onclick="store.removeFromCart(${item.id})" aria-label="Remove ${item.name}" class="cart-remove" style="background: #ef4444; color: white; border: none; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+          <button onclick="store.removeFromCart('${item.id}')" aria-label="Remove ${item.name}" class="cart-remove" style="background: #ef4444; color: white; border: none; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
             <i class="fas fa-trash"></i>
           </button>
         </div>

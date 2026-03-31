@@ -1028,7 +1028,7 @@ Perfect starter template for learning modern web development!
 
 ## 📜 License
 
-This project is provided as-is for educational and commercial use. See LICENSE file for details.
+
 
 ---
 

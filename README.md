@@ -877,10 +877,7 @@ Images have automatic fallback to SVG placeholders if files not found!
 
 ## 🚀 Deployment
 
-### Quick Deploy to Netlify (Easiest):
-1. Go to [netlify.com](https://netlify.com)
-2. Drag & drop your `Forphone` folder
-3. Done! Site is live with HTTPS
+
 
 ### Deploy to Vercel:
 1. Go to [vercel.com](https://vercel.com)

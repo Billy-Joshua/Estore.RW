@@ -1,6 +1,6 @@
 # EstoreRW - Enterprise-Grade E-Commerce Platform
 
-## 🌟 Production-Ready Mobile Marketplace for Rwanda
+ Production-Ready Mobile Marketplace for Rwanda
 
 EstoreRW is a premium, fully-responsive e-commerce platform designed for buying and selling mobile devices across Rwanda. Built with enterprise-grade standards, professional UI/UX patterns, and modern design aesthetics, delivering exceptional user experience across all devices.
 

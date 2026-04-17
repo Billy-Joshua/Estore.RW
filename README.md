@@ -8,8 +8,8 @@ EstoreRW is a premium, fully-responsive e-commerce platform designed for buying 
 
 ###  Premium Features
 
-- 🛍️ **Professional Product Gallery** - Glass-morphism cards with premium animations, filtering by 5+ brands
-- 🛒 **Advanced Shopping Cart** - Full-featured with persistent storage, quantity management, real-time updates
+-  Professional Product Gallery** - Glass-morphism cards with premium animations, filtering by 5+ brands
+-  Advanced Shopping Cart** - Full-featured with persistent storage, quantity management, real-time updates
 - 💰 **Multiple Payment Methods** - Mobile Money (MTN, Airtel), Bank Transfer, Cash on Delivery
 - 👤 **User Account System** - Secure registration, login, purchase history, profile management
 - 📱 **Seller Portal** - Trade-in program with instant quotes for used devices

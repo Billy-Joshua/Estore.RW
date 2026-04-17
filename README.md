@@ -4,9 +4,9 @@
 
 EstoreRW is a premium, fully-responsive e-commerce platform designed for buying and selling mobile devices across Rwanda. Built with enterprise-grade standards, professional UI/UX patterns, and modern design aesthetics, delivering exceptional user experience across all devices.
 
-**Status**: ✅ **Market-Ready | Production Certified | Professional Standards Compliant**
+**Status**: Market-Ready | Production Certified | Professional Standards Compliant**
 
-### ✨ Premium Features
+###  Premium Features
 
 - 🛍️ **Professional Product Gallery** - Glass-morphism cards with premium animations, filtering by 5+ brands
 - 🛒 **Advanced Shopping Cart** - Full-featured with persistent storage, quantity management, real-time updates

@@ -25,7 +25,7 @@ EstoreRW is a premium, fully-responsive e-commerce platform designed for buying 
 
 ---
 
-## 🚀 Market-Ready Deployment
+##  Market-Ready Deployment
 
 ### Quick Start (30 seconds):
 ```bash

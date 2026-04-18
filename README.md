@@ -17,7 +17,7 @@ EstoreRW is a premium, fully-responsive e-commerce platform designed for buying 
 - 📱 **Full Responsiveness** - Optimized for mobile (360px), tablet (768px), desktop (1920px+)
 - 🌙 **Futuristic Aesthetic** - Modern cyberpunk design with accessibility-first approach
 - ⚡ **High Performance** - Sub-2s load time, Lighthouse score 90+, zero external JS frameworks
-- ♿ **WCAG 2.1 AA Compliant** - Keyboard navigation, screen reader support, high contrast ratios
+-  **WCAG 2.1 AA Compliant** - Keyboard navigation, screen reader support, high contrast ratios
 - 🔍 **Professional Search** - Rounded pill-style search with real-time filtering and visual feedback
 - 📊 **AI Recommendations** - Smart product suggestions based on browsing behavior
 - 💬 **Social Proof System** - Customer testimonials, ratings, trust indicators
